@@ -172,6 +172,22 @@ class Resource(ResourceAttributesMixin, object):
         else:
             return False
 
+    def patch(self, data, **kwargs):
+        s = self.get_serializer()
+
+        files = self._extract_files(data)
+        # Files require data to be in a dictionary, not string
+        if not files:
+            data = s.dumps(data)
+        resp = self._request("PATCH", data=data, params=kwargs, files=files)
+        if 200 <= resp.status_code <= 299:
+            if resp.status_code == 204:
+                return True
+            else:
+                return True  # @@@ Should this really be True?
+        else:
+            return False
+
     def delete(self, **kwargs):
         resp = self._request("DELETE", params=kwargs)
         if 200 <= resp.status_code <= 299:

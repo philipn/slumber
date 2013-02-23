@@ -2,7 +2,7 @@ import os.path
 from setuptools import setup, find_packages
 import sys
 
-install_requires = ["requests"]
+install_requires = ["requests>=1.0"]
 
 if sys.version_info < (2, 6):
     install_requires.append("simplejson")

@@ -120,9 +120,11 @@ class Resource(ResourceAttributesMixin, object):
             try:
                 stype = s.get_serializer(content_type=content_type)
             except exceptions.SerializerNotAvailable:
+                stype = s.get_serializer()
+            try:
+                return stype.loads(resp.content)
+            except:
                 return resp.content
-
-            return stype.loads(resp.content)
         else:
             return resp.content
 
